@@ -51,8 +51,8 @@ router.put('/:id', async (req, res) => {
     const updateCatData = await Category.findByPk(req.params.id);
 
     if (!updateCatData) {
-      res.status(400).json(err);
-      // return;?
+      res.status(404).json({ error: 'Unable to find category' });
+      return;
     }
 
     await Category.update(req.body);
@@ -69,8 +69,8 @@ router.delete('/:id', async (req, res) => {
     const deleteCatData = await Category.findByPk(req.params.id);
 
     if (!deleteCatData) {
-      res.status(400).json(err);
-      // return;? 
+      res.status(404).json({ error: 'Unable to find category' });
+      return;
     }
     
     await Category.destroy();
