@@ -54,7 +54,7 @@ router.put('/:id', async (req, res) => {
       res.status(400).json(err);
       // return;?
     }
-    
+
     await Category.update(req.body);
     res.status(200).json(updateCatData);
 
@@ -65,6 +65,20 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   // delete a category by its `id` value
+  try {
+    const deleteCatData = await Category.findByPk(req.params.id);
+
+    if (!deleteCatData) {
+      res.status(400).json(err);
+      // return;? 
+    }
+    
+    await Category.delete();
+    res.status(200).json(updateCatData);
+
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
