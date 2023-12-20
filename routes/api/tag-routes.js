@@ -80,7 +80,11 @@ router.delete('/:id', async (req, res) => {
       return;
     }
     
-    await Tag.destroy();
+    await Tag.destroy({
+      where: {
+        id: req.params.id,
+      }
+  });
     res.status(200).json(deleteTagData);
 
   } catch (err) {
