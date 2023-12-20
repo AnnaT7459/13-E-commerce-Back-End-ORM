@@ -53,13 +53,20 @@ router.put('/:id', async (req, res) => {
       return;
     }
 
-    await Category.update(req.body);
-    res.status(200).json(updateCatData);
+    const [numRowsUpdated] = await Category.update(req.body, { where: { id: req.params.id } });
+
+    if (numRowsUpdated === 0) {
+      res.status(500).json({ error: 'Failed to update category' });
+      return;
+    }
+
+    res.status(200).json({ message: 'Category updated successfully' });
 
   } catch (err) {
     res.status(500).json(err);
   }
 });
+
 
 
 router.delete('/:id', async (req, res) => {
@@ -72,7 +79,11 @@ router.delete('/:id', async (req, res) => {
       return;
     }
     
-    await Category.destroy();
+    await Category.destroy({
+      where: {
+        id: req.params.id
+      }
+    });
     res.status(200).json(deleteCatData);
 
   } catch (err) {
